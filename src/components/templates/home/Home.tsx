@@ -1,7 +1,23 @@
+/* eslint-disable @typescript-eslint/no-shadow */
 import { CheckCircleIcon, SettingsIcon } from '@chakra-ui/icons';
-import { Heading, VStack, List, ListIcon, ListItem } from '@chakra-ui/react';
+import { Heading, VStack, List, ListIcon, ListItem, Input, Button } from '@chakra-ui/react';
+import CpayRadio from 'components/elements/CpayRadio';
+import React from 'react';
+import { getEthAccounts, sendTransaction } from 'utils/web3Api';
 
-const Home = () => {
+const Home = async () => {
+  const [value, setValue] = React.useState('')
+  const [accountValue, setAccountValue] = React.useState('')
+  const handleChange = (inputValue: string) => setValue(inputValue)
+  const handleSend = () => { sendTransaction(accountValue, value) }
+  const handleAccountChange = (value:string) => setAccountValue(value)
+
+  const address = getEthAccounts();
+  const options = (await address).map((value, index) => ({
+    label: `${index + 1}`,
+    value,
+  }));
+
   return (
     <VStack w={'full'}>
       <Heading size="md" marginBottom={6}>
@@ -9,16 +25,14 @@ const Home = () => {
       </Heading>
       <List spacing={3}>
         <ListItem>
-          <ListIcon as={CheckCircleIcon} color="green.500" />
-          Moralis authentication
+          <Input placeholder='Input public address(0x)' value={value} onChange={(e) => handleChange(e.target.value)} />
+          <Button onClick={handleSend} />
         </ListItem>
         <ListItem>
-          <ListIcon as={CheckCircleIcon} color="green.500" />
-          Display Transactions
+          Account
         </ListItem>
         <ListItem>
-          <ListIcon as={CheckCircleIcon} color="green.500" />
-          Display ERC20 transfers
+          <CpayRadio options={options} value={accountValue} onChange={handleAccountChange} />;
         </ListItem>
         <ListItem>
           <ListIcon as={CheckCircleIcon} color="green.500" />
