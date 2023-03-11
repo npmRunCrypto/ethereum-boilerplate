@@ -5,15 +5,15 @@ import CpayRadio from 'components/elements/CpayRadio';
 import React from 'react';
 import { getEthAccounts, sendTransaction } from 'utils/web3Api';
 
-const Home = async () => {
+const address = await getEthAccounts();
+const Home = () => {
   const [value, setValue] = React.useState('')
   const [accountValue, setAccountValue] = React.useState('')
   const handleChange = (inputValue: string) => setValue(inputValue)
   const handleSend = () => { sendTransaction(accountValue, value) }
   const handleAccountChange = (value:string) => setAccountValue(value)
 
-  const address = getEthAccounts();
-  const options = (await address).map((value, index) => ({
+  const options = address.map((value, index) => ({
     label: `${index + 1}`,
     value,
   }));
