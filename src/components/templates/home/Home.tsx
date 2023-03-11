@@ -21,7 +21,7 @@ const Home = () => {
   }, [])
 
   const options = address.map((value, index) => ({
-    label: `${index + 1}`,
+    label: `${index + 1}: ${value}`,
     value,
   }));
 
@@ -33,13 +33,13 @@ const Home = () => {
       <List spacing={3}>
         <ListItem>
           <Input placeholder='Input public address(0x)' value={value} onChange={(e) => handleChange(e.target.value)} />
-          <Button onClick={handleSend} />
+          <Button colorScheme='teal' size='md' onClick={handleSend} >Send</Button>
         </ListItem>
         <ListItem>
           Account
         </ListItem>
         <ListItem>
-          <CpayRadio options={options} value={accountValue} onChange={handleAccountChange} />;
+          <CpayRadio options={options} value={accountValue} onChange={handleAccountChange} />
         </ListItem>
         <ListItem>
           <ListIcon as={CheckCircleIcon} color="green.500" />
