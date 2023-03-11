@@ -2,16 +2,23 @@
 import { CheckCircleIcon, SettingsIcon } from '@chakra-ui/icons';
 import { Heading, VStack, List, ListIcon, ListItem, Input, Button } from '@chakra-ui/react';
 import CpayRadio from 'components/elements/CpayRadio';
-import React from 'react';
+import React, { useEffect } from 'react';
 import { getEthAccounts, sendTransaction } from 'utils/web3Api';
 
-const address = await getEthAccounts();
 const Home = () => {
   const [value, setValue] = React.useState('')
+  const [address, setAddress] = React.useState([''])
   const [accountValue, setAccountValue] = React.useState('')
   const handleChange = (inputValue: string) => setValue(inputValue)
   const handleSend = () => { sendTransaction(accountValue, value) }
-  const handleAccountChange = (value:string) => setAccountValue(value)
+  const handleAccountChange = (value: string) => setAccountValue(value)
+
+  useEffect(() => {
+    (async () => {
+      const addr = await getEthAccounts();
+      setAddress(addr)
+    })()
+  }, [])
 
   const options = address.map((value, index) => ({
     label: `${index + 1}`,
